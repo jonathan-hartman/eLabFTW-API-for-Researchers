@@ -318,7 +318,7 @@ import requests
 heating_experiments_full = []
 
 for exp in heating_experiments:
-    exp_id = exp.get('id')
+    exp_id = exp.id
     endpoint = API_HOST + f'/experiments/{exp_id}'
     headers = {'Authorization': f'{API_KEY}'}
     response = requests.get(endpoint, headers=headers)

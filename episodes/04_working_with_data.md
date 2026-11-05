@@ -249,7 +249,56 @@ Output:
   'userid': 1}]
 ```
 
-What we need to run our experiments is the laser power entry. There's a slight bug in the Python package as you may notice: metadata is returned as None - [this issue has been reported](https://github.com/elabftw/elabapi-python/issues/35), but it has not been fixed yet.
+We can access individual pieces of information from each of the returned experiments, which are elabapi-python objects. Let's look at a single one and extract some information:
+
+```python
+my_experiment = heating_experiments[0]
+print(my_experiment.title)
+print(my_experiment.created_at)
+print(f"Experiment owned by: {my_experiment.fullname}")
+```
+
+Output:
+
+```
+Heating Test Run I
+2026-10-30 09:55:43
+Experiment owned by: Nicole Parks
+```
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+How would you access the ID for each of the experiments you retrieved? How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID?
+
+::::::::::::::::::::::::::::::::::::: solution
+
+You can use the same syntax as above to retrieve a an ID from a single experiment. 
+
+```python
+heating_experiments[0].id
+```
+
+We could then write
+
+```python
+print(heating_experiments[0].id)
+print(heating_experiments[1].id)
+print(heating_experiments[2].id)
+```
+
+to print each id.
+
+To avoid having to access each individual one, we can use a for loop:
+
+```python
+for experiment in heating_experiments:
+  print(experiment.id)
+```
+
+::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+What we need to run our experiments is the laser power entry. There's a slight bug in the Python package as you may notice: metadata is returned as None - [this issue has been reported](https://github.com/elabftw/elabapi-python/issues/35), but it has not been fixed, yet.
 
 Normally, you would be able to use `heating_experiment.metadata` to pull out this piece of information. The code for iterating over the experiments and pulling it out would be:
 

@@ -17,7 +17,12 @@ NOISE_SD = 0.15  # degC
 
 
 def generate(
-    power_w, start_temp=20.0, break_temp=None, duration_s=120.0, step_s=0.5, seed=None
+    power_w,
+    start_temp=20.0,
+    break_temp=None,
+    duration_s=120.0,
+    step_s=0.5,
+    seed=None,
 ):
     """Return a list of (time_s, temperature_C) rows."""
     # Same power gives the same data unless a seed is given explicitly.
@@ -34,48 +39,31 @@ def generate(
             break
     return rows
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument(
-        "--power", type=float, required=True, help="laser power in W"
-    )
-    parser.add_argument(
-        "--start-temp",
-        type=float,
-        default=20.0,
-        help="start temperature in degC",
-    )
-    parser.add_argument(
-        "--duration", type=float, default=120.0, help="run length in s"
-    )
-    parser.add_argument(
-        "--step", type=float, default=0.5, help="sampling interval in s"
-    )
-    parser.add_argument(
-        "--seed",
-        type=int,
-        default=None,
-        help="random seed (default: the power value)",
-    )
-    parser.add_argument(
-        "--out",
-        type=Path,
-        default=Path("measurement.csv"),
-        help="output CSV path",
-    )
-    args = parser.parse_args()
 
+def generate_measurement(
+    power_w,
+    start_temp=20.0,
+    break_temp=None,
+    duration_s=120.0,
+    step_s=0.5,
+    seed=None,
+    output_path=None,
+):
     rows = generate(
-        args.power, args.start_temp, args.duration, args.step, args.seed
+        power_w=power_w,
+        start_temp=start_temp,
+        break_temp=break_temp,
+        duration_s=duration_s,
+        step_s=step_s,
+        seed=seed,
     )
 
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    with args.out.open("w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["time_s", "temperature_C"])
-        writer.writerows(rows)
-    print(f"Wrote {len(rows)} rows to {args.out}")
+    if output_path is not None:
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with output_path.open("w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["time_s", "temperature_C"])
+            writer.writerows(rows)
 
-
-if __name__ == "__main__":
-    main()
+    return rows

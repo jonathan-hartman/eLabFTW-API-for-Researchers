@@ -1,5 +1,5 @@
 ---
-title: "Retrieving and Analyzing Data"
+title: "Working with Data from eLabFTW"
 teaching: 45 # teaching time in minutes
 exercises: 45 # exercise time in minutes
 ---
@@ -7,41 +7,25 @@ exercises: 45 # exercise time in minutes
 :::::::::::::::::::::::::::::::::::::: questions
 
 - How can I retrieve experiment data with Python?
-- How can I analyze and visualize an attached data file?
-- How can I upload analysis results to eLabFTW?
-- How can I create and link experiments with Python?
+- How can I access specific information within an experiment once I have retrieved it?
+- How can I upload files to eLabFTW with Python?
+- How can I start creating Python scripts for automated workflows between a local device and eLabFTW?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Retrieve an experiment from eLabFTW using the Python package
-- Retrieve an attached data file from an eLabFTW experiment using the Python package
-- Use pandas and matplotlib to visualize downloaded data
-- Create an experiment using the Python API client
-- Upload analysis results to an experiment using the Python API client
-- Link experiments using the Python API client
+- Retrieve an experiment from eLabFTW using Python
+- Access specific pieces of data from the information returned by the API
+- Perform bulk actions such as patching or uploading files to multiple experiments at once.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## From an eLabFTW Experiment to a Plot
+## Getting Experiment Parameters from eLabFTW
 
-In the previous episodes, we created an experiment and attached `calibration.csv`.
-Now we will reproduce the analysis workflow in an empty Jupyter Notebook:
+In the previous episodes, we created an experiment and attached `calibration.csv`. Now, we will look at how to get and work with information from entries in eLabFTW.
 
-1. Retrieve the experiment and its attached file.
-2. Load the file into a pandas DataFrame.
-3. Create and interpret a plot.
-4. Upload the plot and an evaluation to eLabFTW.
-5. Create a combined analysis experiment and link it to the source experiment.
-
-:::::::::::::::::::::::::::::::::::::::: instructor
-
-This section requires pre-created experiments in eLabFTW.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Import the Client and Analysis Libraries
+To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each.
 
 The configured client, which we worked with in the previous episode, loads the API host and token from the `.env` file beside `client.py`. Don't forget to keep the token in the environment and do not place it in notebook cells or output - this is not as important if you are working on your personal computer, but is good to practice.
 
@@ -52,15 +36,16 @@ import elabapi_python
 from scripts.client import api_client
 ```
 
-The first things we will do is run an experiment, creating data files to attach to the associated experiments in eLabFTW. 
+The first thing we will do is run an experiment, creating data files to attach to the associated experiments in eLabFTW.
 
-To this end, experiments have already been created in eLabFTW through the UI - say, the planning took place there and the experimental parameters have been setup. We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value.
+To this end, experiments have already been created in eLabFTW through the UI - say, the planning took place there and the experimental parameters have been setup. We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
 
 What we want to do:
 
-1. Get this parameter from the experiments.
-2. Run the three measurements, generating a file for each.
+1. Get the parameters we set from the experiments.
+2. Run the measurements, generating a file for each.
 3. Attach these experiments back to the experiments.
+4. Change the status to running.
 
 First, let's get the experiments. To do so, we need the experiments api again. We can kind of guess from our previous coding experience that we will need an upload API. We can what that looks like by checking out the [examples/03-experiment-file-handling.py](https://github.com/elabftw/elabapi-python/blob/master/examples/03-experiment-file-handling.py) in the github repository.
 
@@ -73,10 +58,10 @@ Note: run `%pip install elabapi_python` (or for any other packages) if needed.
 
 We could get all experiments and then, as we just saw, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
 
-A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in title. We can get the ID through the browser UI by filtering by the sttus and checking the address bar.
+A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiences. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
 
 ```python
-heating_experiments=experiments_api.read_experiments(q='Heating Test Run', status=80)
+heating_experiments=experiments_api.read_experiments(q='Heating Test Run', status=80, scope=1)
 ```
 
 The return is a list of experiment objects. We can check how many it returned for a quick sanity check:
@@ -1025,10 +1010,9 @@ for exp in heating_experiments_full:
 
 If you check the output folder `output_data/`, you will see three files have been created.
 
-Let's go ahead and attach these back to the experiment. Since we're in a new notebook, we have to create the upload client again.
+Let's go ahead and attach these back to the experiment. We can check [line 42-47 in examples/23-create-resources-and-upload-pdfs.py](https://github.com/elabftw/elabapi-python/blob/master/examples/23-create-resources-and-upload-pdfs.py#L42C5-L47C6) in the GitHub Python examples to see how we upload files to entries.
 
 ```python
-uploads_api = elabapi_python.UploadsApi(api_client)
 for exp in heating_experiments_full:
     exp_id = exp['id']
     power = exp['metadata_decoded']['extra_fields']['Laser Power']['value']
@@ -1038,274 +1022,63 @@ for exp in heating_experiments_full:
                 "experiments",
                 exp_id,
                 file=str(file),
+            
     )
     
 ```
 
 If you check your experiments in the UI, you should see your attached files.
 
+::::::::::::::::::::::::::::::::::::: challenge
+
+Write a for loops that sets each experiment status to running. Hint: get an idea of what the commands could look like in the example [examples/05-create-modify-item.py](https://github.com/elabftw/elabapi-python/blob/master/examples/05-create-modify-item.py) on GitHub.
+
+Execute the code and check the UI to see if it worked.
+
+::::::::::::::::::::::::::::::::::::: solution
+
+The request we are making is a `patch` to an existing experiment. We need to tell the 
+
+```python
+for exp in heating_experiments_full:
+    exp_id = exp['id']
+    experiments_api.patch_experiment(exp_id, body={'status': 47})
+
+```
+
+Note, and alternative using the original experiment return would be:
+
+```python
+for exp in heating_experiments:
+    exp_id = exp.id
+    experiments_api.patch_experiment(exp_id, body={'status': 47})
+```
+
+Here, we are working with the eLabFTW object instead of a dictionary, so we access the experiment ID differently.
+
+An even shorter war to do this:
+
+```python
+for exp in heating_experiments:
+    experiments_api.patch_experiment(exp.id, body={'status': 47})
+```
+
+And even shorter using list comprehension:
+
+```python
+[experiments_api.patch_experiment(exp.id, body={'status': 47}) for exp in heating_experiments]
+```
+
+::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::: callout
 Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the UI and then runs them for you and attached the output files for you to then check through the UI.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-We have not worked with Pandas or Matplotlib yet, but they are the most common Python libraries for data analysis and visualization. We will use them to load the CSV file and create a plot.
-
-Also note, we use aliases for the libraries to make the code more concise. This is a common practice in Python, especially for frequently used libraries. `pd` is the standard alias for `pandas`, and `plt` is the alias for `matplotlib.pyplot`.
-
-Next, we create the API clients we need:
-
-```python
-experiments_api = elabapi_python.ExperimentsApi(api_client)
-uploads_api = elabapi_python.UploadsApi(api_client)
-links_api = elabapi_python.LinksToExperimentsApi(api_client)
-```
-
-## Retrieve an Experiment
-
-Use the experiment ID from the previous episode to retrieve your experiment. The response is an object containing the experiment metadata, body, links, and upload metadata.
-
-```python
-experiment_id = 94  # replace with the ID from the previous episode
-experiment = experiments_api.get_experiment(experiment_id)
-
-print(experiment.title)
-print(experiment.body)
-```
-
-We use the uploads API to interact with the attached files. Inspect the attached files before downloading anything. This gives you a better idea of the structure of the returned data:
-
-```python
-uploads = uploads_api.read_uploads("experiments", experiment_id)
-
-for upload in uploads:
-    print(upload.id, upload.real_name, upload.comment)
-```
-
-The API distinguishes between upload metadata and the file contents. Select the measurement file and request its contents in binary format:
-
-```python
-measurement_upload = next(
-    upload for upload in uploads if upload.real_name == "measurement.csv"
-)
-
-response = uploads_api.read_upload(
-    "experiments",
-    experiment_id,
-    measurement_upload.id,
-    format="binary",
-    _preload_content=False,
-)
-
-measurement_path = Path("measurement.csv")
-measurement_path.write_bytes(response.data)
-```
-
-::::::::::::::::::::::::::::::::::::: callout
-
-The `_preload_content=False` argument is needed by this generated client when
-downloading file content. Without `format="binary"`, the request returns upload information rather than the file itself.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Analyze and Visualize the Data
-
-Load the downloaded CSV file and inspect its structure before plotting. This is where we will use Pandas to create a DataFrame from the CSV file. You can use the `parse_dates` argument to automatically convert the timestamp column to a datetime type:
-
-```python
-data = pd.read_csv("measurement.csv", parse_dates=["timestamp"])
-data.head()
-```
-
-Now, we will use matplotlib (`plt`) to create a first plot of temperature over time:
-
-```python
-ax = data.plot(
-    x="timestamp",
-    y="temperature_c",
-    marker="o",
-    title="Temperature calibration",
-    ylabel="Temperature (°C)",
-    xlabel="Time",
-    legend=False,
-)
-ax.grid(True)
-plt.tight_layout()
-plt.show()
-```
-
-Ask learners to write a short interpretation in a Markdown cell. For example:
-
-> The temperature increases slightly during the measurement period, from 21.8
-> °C to 22.1 °C. No abrupt changes are visible.
-
-Save the plot so it can be attached to the source experiment:
-
-```python
-plot_path = Path("temperature_plot.png")
-fig = ax.get_figure()
-fig.savefig(plot_path, dpi=150, bbox_inches="tight")
-```
-
-## Upload the Analysis Result
-
-The Python client uses the same upload endpoint as the cURL command from the
-previous episode. The entity type is `experiments` and the entity ID is the
-experiment receiving the file.
-
-```python
-notebook_path = Path("analysis_notebook.ipynb") # this notebook
-
-uploads_api.post_upload(
-    "experiments",
-    experiment_id,
-    file=str(plot_path),
-    comment="Temperature calibration plot",
-)
-
-uploads_api.post_upload(
-    "experiments",
-    experiment_id,
-    file=str(notebook_path),
-    comment="Analysis notebook",
-)
-```
-
-Refresh the upload list to verify the result:
-
-```python
-for upload in uploads_api.read_uploads("experiments", experiment_id):
-    print(upload.real_name, upload.comment)
-```
-
-An evaluation can be added to the experiment body with `patch_experiment`:
-
-```python
-evaluation = """
-<p>The temperature increased from 21.8 °C to 22.1 °C over the measurement period.
-No abrupt changes are visible.</p>
-"""
-
-experiments_api.patch_experiment(
-    experiment_id,
-    body=elabapi_python.EntityEditable(bodyappend=evaluation),
-)
-```
-
-## Create and Link an Analysis Experiment
-
-Lets's create a separate experiment for the combined analysis. The API uses the `EntityEditable` model for experiment creation.
-
-```python
-analysis_experiment = elabapi_python.EntityEditable(
-    title="Temperature calibration analysis",
-    body="<p>Combined analysis of the calibration measurements.</p>",
-)
-
-experiments_api.post_experiment(body=analysis_experiment)
-```
-
-The create endpoint does not return a complete experiment object in every
-client version. Retrieve the experiments again and use the ID of the newly
-created experiment. In a real workflow, prefer the ID from the response
-`Location` header when it is available.
-
-```python
-experiments = experiments_api.read_experiments()
-for item in experiments[:5]:
-    print(item.id, item.title)
-
-```
-
-Use the returned ID:
-
-```python
-
-analysis_experiment_id = 95  # replace with the newly created experiment ID
-```
-
-Link the analysis experiment to the source experiment. The direction is
-important: here the source experiment receives a link to the analysis
-experiment.
-
-```python
-links_api.post_entity_experiments_links(
-    "experiments",
-    experiment_id,
-    analysis_experiment_id,
-    body=elabapi_python.ExperimentsLinksSubidBody(action="link"),
-)
-```
-<!-- TODO: add data files for mutiple experiments, retrieve, combine, plot, upload to new experiment, link to source experiments -->
-Upload the combined plot or notebook to the analysis experiment:
-
-```python
-uploads_api.post_upload(
-    "experiments",
-    analysis_experiment_id,
-    file=str(plot_path),
-    comment="Combined analysis plot",
-)
-```
-
-::::::::::::::::::::::::::::::::::::: challenge
-
-Using a second experiment ID, adapt the code above to:
-
-- retrieve its attached measurement file,
-- create a plot with both measurements,
-- write a short interpretation in a Markdown cell,
-- upload the combined plot to a new analysis experiment, and
-- link the two source experiments to that analysis experiment.
-
-::::::::::::::::::::::::::::::::::::::: solution
-
-Use `read_experiments` or the experiment IDs from the previous episodes to
-select the source experiments. Retrieve each file with `UploadsApi`, load the
-files into pandas, and combine them before plotting:
-
-```python
-experiment_ids = [94, 95]  # replace with the two source experiment IDs
-frames = []
-
-for source_id in experiment_ids:
-    source_uploads = uploads_api.read_uploads("experiments", source_id)
-    source_measurement = next(
-        upload for upload in source_uploads if upload.real_name == "measurement.csv"
-    )
-    source_response = uploads_api.read_upload(
-        "experiments",
-        source_id,
-        source_measurement.id,
-        format="binary",
-        _preload_content=False,
-    )
-    source_path = Path(f"measurement_{source_id}.csv")
-    source_path.write_bytes(source_response.data)
-    frame = pd.read_csv(source_path, parse_dates=["timestamp"])
-    frame["experiment_id"] = source_id
-    frames.append(frame)
-
-combined = pd.concat(frames, ignore_index=True)
-combined.plot(x="timestamp", y="temperature_c", by="experiment_id", marker="o")
-plt.tight_layout()
-plt.show()
-```
-
-The remaining steps are the same: create an analysis experiment, upload the
-combined plot, and call `post_entity_experiments_links` for each source
-experiment.
-
-
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 ::::::::::::::::::::::::::::::::::::: keypoints
 
-- The Python client can retrieve experiment metadata and attached files
-- pandas can turn downloaded CSV data into a table ready for analysis
-- matplotlib can visualize measurements and save plots for upload
-- The API client can create experiments, upload files, and append evaluations
-- Experiment links make the relationship between source data and analysis explicit
-
+- Retrieve information using either the elabapi_python module or requests
+- Use queries and filters in your Python API requests to  access specific entries by given parameters
+- Iterate (loop) over lists of entries to perform bulk actions
 :::::::::::::::::::::::::::::::::::::::::::::::

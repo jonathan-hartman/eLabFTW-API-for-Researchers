@@ -1,6 +1,7 @@
 import csv
 import random
 from pathlib import Path
+from datetime import datetime
 
 HEATING_COEFF = 0.002  # degC per (W * s)
 NOISE_SD = 0.15  # degC
@@ -37,8 +38,9 @@ def generate_measurement(
     duration_s=120.0,
     step_s=0.5,
     seed=None,
-    output_path=None,
-):
+    output_folder='output_data'
+):  
+
     rows = generate(
         power_w=power_w,
         start_temp=start_temp,
@@ -47,13 +49,12 @@ def generate_measurement(
         step_s=step_s,
         seed=seed,
     )
+    file_name = f'{int(power_w)}_measurement_{datetime.now().isoformat()}.csv'
+    output_path = Path(output_folder)/Path(file_name)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["time_s", "temperature_C"])
+        writer.writerows(rows)
 
-    if output_path is not None:
-        output_path = Path(output_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        with output_path.open("w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["time_s", "temperature_C"])
-            writer.writerows(rows)
-
-    return rows
+    return output_path

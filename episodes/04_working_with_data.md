@@ -1067,7 +1067,7 @@ for exp in heating_experiments_full:
     power = exp['metadata_decoded']['extra_fields']['Laser Power']['value']
     for file in measurement_files:
         if file.name.startswith(power):
-            upload_client.post_upload(
+            uploads_api.post_upload(
                 "experiments",
                 exp_id,
                 file=str(file),

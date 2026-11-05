@@ -327,7 +327,7 @@ for exp in heating_experiments:
 
 Generally, it's good to know you have a lot of options to get where you need to be. Another possible workaround may have been, for example, to download the experiment as a JSON or ELN Format file and pull the info from there.
 
-Now that we have our experiments, we can pull out the information we need. Again, we've saved the experiments as a list. In this case they are now a list of Python dictionaries instead of elabapi_python objects. We access the information a little differently. Let's look at a single experiment, accessing it by its index:
+Now that we have our experiments, we can pull out the information we need. Again, we've saved the experiments as a list. In this case they are now a list of Python _dictionaries_ instead of _elabapi-python objects_. We access the information a little differently. Let's look at a single experiment, accessing it by its index:
 
 ```python
 heating_experiments_full[0]
@@ -997,7 +997,7 @@ heating_experiments_full[0]
   'userid': 1}]
 ```
 
-There is a `metadata` and a `metadata_decoded` key. We can quickly check what te differences are by using Python's built-in `type` function:
+There is a `metadata` and a `metadata_decoded` key. We can quickly check what te differences are by using Python's built-in `type` function.  Note, values are accessed slightly differently in dictionaries than in elabapi-python objects:
 
 ```python
 type(heating_experiments_full[0]['metadata'])

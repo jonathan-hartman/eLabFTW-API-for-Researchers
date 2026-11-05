@@ -1,13 +1,3 @@
-"""Generate one synthetic laser-heating run: temperature of saltwater over time.
-
-Model: T(t) = start_temp + HEATING_COEFF * power * t + Gaussian noise
-
-Usage:
-    python generate_measurement.py --power 30 --material granite
-    python generate_measurement.py --power 30 --material granite --out ../output_data/measurement.csv
-"""
-
-import argparse
 import csv
 import random
 from pathlib import Path

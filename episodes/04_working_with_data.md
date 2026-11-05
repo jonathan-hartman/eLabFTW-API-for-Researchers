@@ -272,7 +272,7 @@ How would you access the ID for each of the experiments you retrieved? How can y
 
 ::::::::::::::::::::::::::::::::::::: solution
 
-You can use the same syntax as above to retrieve a an ID from a single experiment. 
+You can use the same syntax as above to retrieve a an ID from a single experiment.
 
 ```python
 heating_experiments[0].id

@@ -1200,8 +1200,7 @@ And even shorter using list comprehension:
 [experiments_api.patch_experiment(exp.id, body={'status': 47}) for exp in heating_experiments]
 ```
 
-::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
 Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the UI and then runs them for you and attached the output files for you to then check through the UI.

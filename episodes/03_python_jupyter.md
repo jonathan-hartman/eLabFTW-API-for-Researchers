@@ -50,7 +50,7 @@ Core concepts
 
 ### 1. Printing & basic data types  
 
-::::::::::::::::::::::::::::::: instructor note
+:::::::::::::::::::::::::::::::::::::: instructor note
 
 These will be live coded in a Jupyter notebook.
 
@@ -147,44 +147,79 @@ value is larger
 
 ### 6. Defining and calling a function  
 
+Functions serve as reusable pieces of code. We define them using `def`:
+
 ```python
 def greet(name: str) -> str:
     """Return a friendly greeting."""
     return f"Hello, {name}!"
+```
 
+Then we can call them using their name and passing any required parameters in parentheses:
+
+```
 print(greet("Alice"))
 ```
 
-**Output**  
+**Output**
 
 ```
 Hello, Alice!
-```  
+```
 
-### 7. Reading and writing JSON files  
+#### Built-in Functions
+
+There are a number of built-in functions in Python, which means we don't have to define everything ourselves. We've already seen some of these, for example, the `print()` function. Again, we call the function by it's name and pass what it needs in the parentheses (as above `print("Hello, eLabFTW researcher!")`).
+
+The built-in function `help()` allows us to retrieve the documentation on functions, including built-in ones. For example, we can call `help()` on the built-in function `type()`:
 
 ```python
-import json
-
-payload = {"experiment": "test", "value": 123}
-
-# Write to disk
-with open("payload.json", "w") as fp:
-    json.dump(payload, fp, indent=2)
-
-# Read it back
-with open("payload.json") as fp:
-    data = json.load(fp)
-
-print(data)
+help(print)
 ```
 
-**Output**  
+**Output**
 
 ```
-{'experiment': 'test', 'value': 123}
+Help on built-in function print in module builtins:
+
+print(*args, sep=' ', end='\n', file=None, flush=False)
+    Prints the values to a stream, or to sys.stdout by default.
+    
+    sep
+      string inserted between values, default a space.
+    end
+      string appended after the last value, default a newline.
+    file
+      a file-like object (stream); defaults to the current sys.stdout.
+    flush
+      whether to forcibly flush the stream.
+``` 
+
+Another useful built-in function is `len()` which gives is the length of things, such as, strings, lists, or dictionaries:
+
+```python
+len('Hello')
 ```
 
+**Output**
+```
+5
+```
+
+```python
+samples = ["S1", "S2", "S3"]   # create a list
+len(sample)
+```
+
+**Output**
+
+```
+3
+```
+
+See the [Python Docs on built-in functions](https://docs.python.org/3/builtins/functions.html).
+
+<!--TODO better challenge-->
 ::::::::::::::::::::::::::::::::::::::::::: challenge
 What will be printed?
 
@@ -264,11 +299,13 @@ Honestly, for this specific case, the help output is not extremely helpful. Howe
 dir(elabapi_python)
 ```
 
-To get started, we have the [examples folder](https://github.com/elabftw/elabapi-python/tree/master/examples) on Github. Deltablot has created a nifty [client configuration file](https://github.com/elabftw/elabapi-python/blob/master/examples/client.py). This has already been downloaded and included in your `workshop_data` directory. We have made some small adjustments to ensure the secrets load correctly.
+If we start the [API docs](https://doc.elabftw.net/api/) again and click on `Python Library (v2)`, we get are taking to a GitHub repository.
+
+Here, we have the [examples folder](https://github.com/elabftw/elabapi-python/tree/master/examples) on Github. This contains a nifty [client configuration file](https://github.com/elabftw/elabapi-python/blob/master/examples/client.py). This has already been downloaded and included in your `workshop_data` directory. We have made some small adjustments to ensure the secrets load correctly.
 
 In the Python library, there are various clients that can be used to interact with the eLabFTW API. First, you set up the main one, which has already been done in `client.py`, then, you can create the others.
 
-Import the main one into your notebook using:
+We import the main api client into our notebook using:
 
 ```python
 from scripts.client import api_client
@@ -281,7 +318,6 @@ You may get an error here for missing packages, especially dotenv:
 ```python
 %pip install python-dotenv
 ```
-
 
 Let's look at a couple examples in the GitHub repo.
 
@@ -304,6 +340,8 @@ api_response
 4
 ```
 
+will output the number 4.
+
 As opposed to:
 
 ```python
@@ -311,6 +349,7 @@ print(api_response)
 4
 ```
 
+which will output both `api_response` and the number 4.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Back to the clients. Similarly, we can see an experiment client:
@@ -319,17 +358,17 @@ Back to the clients. Similarly, we can see an experiment client:
 exp_client = elabapi_python.ExperimentsApi(api_client)
 ```
 
-Check out line 88, which shows us a `GET` request. Remember how we created and retrieved an experiment in the terminal? Let's try the same thing here using the experiment ID from the last lesson.
+Check out [line 87](https://github.com/elabftw/elabapi-python/blob/master/examples/00-getting-started.py#L87), which shows us how we retrieve an experiment. Remember how we created and retrieved an experiment in the terminal using cURL? Let's try the same thing here using the experiment ID from the last lesson.
 
 ```python
-exp_id = 94 # example: replace with your experiment ID
+exp_id = 94 # example; replace with your experiment ID
 exp = exp_client.get_experiment(exp_id)
 print(exp)
 ```
 
 You can see, this does the same things as we were doing before, but many of us find Python easier to read and understand than the terminal commands. This is especially true when we start to combine multiple steps into a single script.
 
-We can derive the code from the documentation, as well, which is a great way to learn how to use the API. Check out the [API docs](https://doc.elabftw.net/api/) and click on `Python Library (v2)`.
+
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
@@ -338,7 +377,7 @@ What is the code for the client that interacts with resources in eLabFTW? Create
 1. Retrieve all resources (you have access to) from your eLabFTW instance.
 2. Retrieve the bluetooth thermometer resource (from the last episode).
 
-Hint: Look through the [examples](https://github.com/elabftw/elabapi-python/tree/master/examples) and keep your eyes out for a different word than _resources_.
+Hint: Look through the [examples](https://github.com/elabftw/elabapi-python/tree/master/examples) and keep your eyes out for a different word than _resources_. We saw this in [episode 01](01_API), as well.
 
 :::::::::::::::::::::::: solution
 
@@ -352,16 +391,15 @@ To retrieve and view all resources you have access to (1):
 
 ```python
 resources = itemsApi.read_items()
-resources
+resources # outputs the resource to the jupyter notebook
 ```
 
 To retrieve a specific resource (2):
 
 ```python
 resource = itemsApi.get_item(144)
-resource
+resource # outputs the resource to the jupyter notebook
 ```
-
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::

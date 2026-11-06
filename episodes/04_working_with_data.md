@@ -51,7 +51,7 @@ flowchart LR
     n3 --> n11
     n10 --> n5
     n11 --> n10
-    n12(["Researcher"]) -- plens --> n3
+    n12(["Researcher"]) -- plans --> n3
 
 ```
 

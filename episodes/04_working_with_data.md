@@ -268,7 +268,9 @@ Experiment owned by: Nicole Parks
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-How would you access the ID for each of the experiments you retrieved? How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID?
+How would you access the ID for each of the experiments you retrieved? 
+
+Bonus: How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID?
 
 ::::::::::::::::::::::::::::::::::::: solution
 

@@ -126,20 +126,16 @@ Note: `.env` is more common, however, Jupyter lab immediately hides these.
 
 Now, let's make a new request and create an experiment:
 
-Scroll to the [Experiments](https://doc.elabftw.net/api/elabapi-html/#api-Experiments) section on the left and click [`postExperiment`](https://doc.elabftw.net/api/elabapi-html/#api-Experiments-postExperiment). On the right, cURL has already been selected in the example window. Let's use this to programmatically create and experiment:
+Scroll to the [Experiments](https://doc.elabftw.net/api/elabapi-html/#api-Experiments) section on the left and click [`postExperiment`](https://doc.elabftw.net/api/elabapi-html/#api-Experiments-postExperiment). Again, we will look at the cURL usage example and copy and paste it into our text editor. Similar to the steps above:
 
-1. Copy the text in the example window into a text editor in Jupyter Lab.
-2. Edit the required info
+1. Copy and paste your token to the terminal, replacing `[[apiKey]]`
+2. Replace `https://elab.local:3148` with your eLabFTW URL
+3. Add experiment info using the template below. Once done, add `\` at the end of the last line, <kbd>enter</kbd> for a new line and add `-d '{"title":"my api exp"}` (replace info in curly brackets with the full data)
+4. Add `-i` before `-X` in the top line. This ensures the response is output.
+5. Copy and paste into your terminal
+6. Hit <kbd>enter</kbd> to run
 
-      
-   1. Copy and paste your token to the terminal, replacing `[[apiKey]]`
-   2. Replace `https://elab.local:3148` with your eLabFTW URL
-   3. Add experiment info using the template below. Once done, add `\` at the end of the last line, <kbd>enter</kbd> for a new line and add `-d '{"title":"my api exp"}` (replace info in curly brackets with full info)
-   4. Add `-i` before `-X` in the top line. This ensures the response is output.
-   5. Copy and paste into your terminal
-   6. Hit <kbd>enter</kbd> to run
-
-Note: make sure you have spaces between the `\` and the end of the line.
+Note: Don't forget to add spaces between the `\` and the end of the line.
 
 Template for data:
 
@@ -224,27 +220,27 @@ curl -i -X POST \
    "https://{YOUR_ELAB_URL}/api/v2/experiments"
 ```
 
+::::::::::::::::::::::::::::::::::::: challenge
 
+The below code intends to link the device resource [**Bluetooth Infrared Thermometer**](elab.parks.web.gateway.ionos.coscine.dev/database.php?mode=view&id=144) to the experiment experiment created above.
 
+In it current state, it fails. What needs to be fixed?
 
-
-Now, let's link the device resource **Bluetooth Infrared Thermometer**.  Again, we look at the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/). We need three parameters:
-
-* entity type &rarr; resource  &rarr; `items` (as they are called in the API)
-* entity (resource) id
-* experiment id &rarr; see above previously json
-
-To keep it simple, we can check the course team UI for the ID.
-
-We can copy-and-paste the cURL code from the docs and fill out the required information (don't forget to adjust the spaces after each line before the `\`):
+Hint: [Read the docs for LinksToExperiments](https://doc.elabftw.net/api/elabapi-html/#api-LinksToExperiments)
 
 ```bash
 curl -X POST \
    -H "Authorization: $ELAB_API_KEY" \
    -H "Accept: application/json" \
    -H "Content-Type: application/json" \
-   "$ELAB_API_HOST/{entity_type}/{entity_id}/experiments_links/{exp_id}"
+   "elab.parks.web.gateway.ionos.coscine.dev/items/144/experiment/{your_exp_id}"
 ```
+
+:::::::::::::::::::::::: solution
+
+:::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
@@ -265,6 +261,14 @@ curl -X GET \
 ```
 
 This prints the JSON response directly in the terminal. The response should contain the experiment title and body, its creation and modification details, the permission settings, and the values in `metadata.extra_fields`.
+
+
+:::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: callout
+
 
 **If you have admin rights**, for more readable, indented JSON, you can pipe the response through `jq` :
 
@@ -294,11 +298,9 @@ explicitly, because `curl` may be an alias for a PowerShell command (shortened e
 ```powershell
 curl.exe ... | jq .
 ```
+:::::::::::::::::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
+<!-- 
 ::::::::::::::::::::::::::::::::::::: challenge
 
 Fill in the blanks for the the script in `research_computer/attach_measurement.sh` to attach the measurement file (`research_computer/2026_11_17_thermometer_calibration.csv`) to the created experiment.
@@ -350,7 +352,7 @@ curl -sS -f -i "${curl_options[@]}" "$UPLOAD_URL"
 
 :::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::: -->
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
@@ -358,6 +360,5 @@ curl -sS -f -i "${curl_options[@]}" "$UPLOAD_URL"
 * cURL can create, retrieve, and update data through the eLabFTW API
 * API responses contain JSON data and HTTP headers that help interpret the result
 * Environment variables and `.env` (or `secrets.env`) files keep API credentials out of commands
-* File uploads use the eLabFTW upload endpoint with `multipart/form-data`
 
 :::::::::::::::::::::::::::::::::::::::::::::::

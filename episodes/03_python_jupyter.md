@@ -335,7 +335,7 @@ We can derive the code from the documentation, as well, which is a great way to 
 
 What is the code for the client that interacts with resources in eLabFTW? Create this client in your notebook and use it to:
 
-1. Retrieve the resources from your eLabFTW instance.
+1. Retrieve all resources (you have access to) from your eLabFTW instance.
 2. Retrieve the bluetooth thermometer resource (from the last episode).
 
 Hint: Look through the [examples](https://github.com/elabftw/elabapi-python/tree/master/examples) and keep your eyes out for a different word than _resources_.

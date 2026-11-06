@@ -1,7 +1,7 @@
 ---
 title: "Working with Data from eLabFTW"
 teaching: 40
-exercises: 10
+exercises: 20
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions

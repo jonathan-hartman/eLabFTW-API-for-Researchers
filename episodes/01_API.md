@@ -79,9 +79,15 @@ This gives us very basic information on the API. If we scroll down we find anoth
 
 Three things are important for this course: (1) the version 2 documentation link, which leads to the APIs [Swagger documentation page](https://doc.elabftw.net/api/v2), (2) the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/) and (3) the [Python Library (v2) link](https://github.com/elabftw/elabapi-python), the latter two of which we will get to later.
 
-Let's head to the [Swagger page]((https://doc.elabftw.net/api/v2)). Here, we have a list of **endpoints**, sub-divided into categories. Each link is color-coded to indicate the type of request, further marked by `PUT`, `POST`, `GET`, `PATCH`, and `DELETE` labels.
+We will mainly focus on the  to the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/). To the left, we have the various API methods allowed for each type of API, e.g. items (resources in the UI), experiments, items, and so on.
 
-Scrolling through the categories and knowing how eLabFTW is structured, we can get a pretty good idea of the types of interaction we can carry out. For instance, under `Experiment Categories` we have a `GET` request that let's us read all experiment categories in a given team (indicated by it's ID).
+Scrolling through the categories and knowing how eLabFTW is structured, we can get a pretty good idea of the types of interaction we can carry out. For instance, under [API METHODS - EXPERIMENTS](https://doc.elabftw.net/api/elabapi-html/#api-Experiments) we see there are options to delete, get, post, patch, and read.
+
+![screenshot of the api methods for experiments from the HTML docs page](fig/screenshot_experimentsAPI_HTMLdocs.png)
+
+Selecting a methods gives us more information, e.g., we can see that `postExperiments` creates an experiment, as well as usage examples in different programming languages and the parameters we can give our API request.
+
+![alt text](fig/screenshot_postExperiments_HTMLdocs.png)
 
 ## Constructing Requests
 

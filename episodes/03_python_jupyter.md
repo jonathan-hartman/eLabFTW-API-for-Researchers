@@ -219,6 +219,7 @@ len(sample)
 
 See the [Python Docs on built-in functions](https://docs.python.org/3/builtins/functions.html).
 
+<!--TODO better challenge-->
 ::::::::::::::::::::::::::::::::::::::::::: challenge
 What will be printed?
 

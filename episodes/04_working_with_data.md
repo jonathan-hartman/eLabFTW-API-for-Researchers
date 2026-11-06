@@ -55,9 +55,11 @@ flowchart LR
 
 ```
 
-To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each.
+To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each in the extra fields metadata. _Note: You may change the title, just ensure the word 'Heating' remains._
 
 The configured client, which we worked with in the previous episode, loads the API host and token from the `secrets.env` or `.env` file beside `client.py`. Don't forget to keep the token in the environment and do not place it in notebook cells or output - this is not as important if you are working on your personal computer, but is good to practice.
+
+With the experiments planned via the GUI, we now need to retrieve the parameters. To do so, we first retrieve the experiments, then we extract the information we need.
 
 Again, since we are using a new notebook we import everything we need:
 
@@ -66,45 +68,40 @@ import elabapi_python
 from scripts.client import api_client
 ```
 
-The first thing we will do is run an experiment, creating data files to attach to the associated experiments in eLabFTW.
+If we check the eLabFTW GUI for our own experiments, we will see our experiments with the category 'MEASUREMENT' with 'Heating' in the title:
 
-We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
-
-What we want to do:
-
-1. Get the parameters we set from the experiments.
-2. Run the measurements, generating a file for each.
-3. Attach these experiments back to the experiments.
-4. Change the status to running.
+![screenshot of ones own experiments in eLabFTW](fig/screenshot_elabftwUI_experiments.png)
 
 First, let's get the experiments. To do so, we need the experiments api again. We also need a method to attach files. We can what that looks like by checking out the [examples/03-experiment-file-handling.py](https://github.com/elabftw/elabapi-python/blob/master/examples/03-experiment-file-handling.py) in the github repository.
 
+We know we need the experiments API, let's create it:
 ```python
 experiments_api = elabapi_python.ExperimentsApi(api_client)
-uploads_api = elabapi_python.UploadsApi(api_client)
 ```
 
 Note: run `%pip install elabapi_python` (or for any other packages) if needed.
 
-We could get all experiments, as we just saw, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
+We could get all experiments, as we just saw in the previous episode, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
 
-A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look for experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in the title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiments. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
+A quick check of the [HTML eLabFTW API Docs for **readExperiments**](https://doc.elabftw.net/api/elabapi-html/#api-Experiments-readExperiments) gives us information here. You can query terms, look for experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat' in the title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiments. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This ensures everyone is working with their own experiments.
 
 ```python
-heating_experiments=experiments_api.read_experiments(q='Heating Test Run', status=80, scope=1)
+heating_experiments=experiments_api.read_experiments(q='Heating', status=80, scope=1)
 ```
 
-The return is a list of experiment objects. We can check how many it returned for a quick sanity check:
+The return is a `list` of experiment objects. We can check how many it returned for a quick sanity check:
 
 ```python
 len(heating_experiments)
 ````
 
-Output:
+**Output:**
 
 ```
 3
-````
+```
+
+Note: if you created more, you list will be longer.
 
 We can also looks at the returned data:
 
@@ -112,7 +109,7 @@ We can also looks at the returned data:
 heating_experiments
 ````
 
-Output:
+**Output:**
 
 ```
 [{'_date': '2026-10-30',
@@ -279,7 +276,7 @@ Output:
   'userid': 1}]
 ```
 
-We can access individual pieces of information from each of the returned experiments, which are elabapi-python objects. Let's look at a single one and extract some information:
+We can access individual pieces of information from each of the returned experiments, which are elabapi-python objects. Let's look at a single one and extract some information (remember how we can use indexing for lists, as shown in [our crash course in episode 03](03_python_jupyter.md#3-lists-ordered-collections)):
 
 ```python
 my_experiment = heating_experiments[0]
@@ -288,7 +285,7 @@ print(my_experiment.created_at)
 print(f"Experiment owned by: {my_experiment.fullname}")
 ```
 
-Output:
+**Output:**
 
 ```
 Heating Test Run I
@@ -296,9 +293,15 @@ Heating Test Run I
 Experiment owned by: Nicole Parks
 ```
 
+This is what we expect if we look at the same experiment in the GUI:
+
+![screenshot of the experiment info in the GUI](fig/screenshot_experimentI_info.png)
+
 ::::::::::::::::::::::::::::::::::::: challenge
 
-How would you access the ID for each of the experiments you retrieved? How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID?
+How would you access the ID for each of the experiments you retrieved using the GUI?
+
+Bonus: How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID? Hint: check out the [previous episode on iteration](03_python_jupyter.md#4-loop-over-a-list-forloop-to-create-a-dictionary)
 
 ::::::::::::::::::::::::::::::::::::: solution
 
@@ -325,12 +328,23 @@ for experiment in heating_experiments:
   print(experiment.id)
 ```
 
-::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-What we need to run our experiments is the laser power entry. There's a slight bug in the Python package as you may notice: metadata is returned as None - [this issue has been reported](https://github.com/elabftw/elabapi-python/issues/35), but it has not been fixed, yet.
+What we need to run our experiments is the laser power entry. There's a slight bug in the Python package as you may notice: the parameters, which would be in `metadata` are missing:
 
-Normally, you would be able to use `heating_experiment.metadata` to pull out this piece of information. The code for iterating over the experiments and pulling it out would be:
+```python
+print(my_experiment.metadata)
+```
+
+**Output:**
+
+```
+None
+```
+
+[This issue has been reported](https://github.com/elabftw/elabapi-python/issues/35), but it has not been fixed, yet.
+
+The code for iterating over the experiments and pulling it out would be:
 
 ```python
 power_settings = []
@@ -339,7 +353,7 @@ for exp in heating_experiments:
     power_settings.append(power_setting)
 ```
 
-We've built a workaround. The returned data structure is a bit different, but that's fine. It works with the requests Python package and makes API requests directly without the eLabFTW API package:
+There's many ways to get what we need: here, we will use the `requests` package to make the API request directly and get the full experiment information. The returned data structure is a bit different, but that's fine.
 
 ```python
 from scripts.client import API_HOST, API_KEY
@@ -1027,13 +1041,31 @@ heating_experiments_full[0]
   'userid': 1}]
 ```
 
-There is a `metadata` and a `metadata_decoded` key. We can quickly check what te differences are by using Python's built-in `type` function.  Note, values are accessed slightly differently in dictionaries than in elabapi-python objects:
+Again we see all the information we would expect–and then some. Keeping our eyes out for the work _metadata_ we see:
+
+```
+'metadata': '{"extra_fields": {"Laser Power": {"type": "number", "unit": "W", "units": ["W"], "value": "50"}, "Switch-off Temperature": {"type": "number", "unit": "°C", "units": ["°C", "K"], "value": "100"}}}',
+'metadata_decoded': {'extra_fields': {'Laser Power': {'type': 'number',
+    'unit': 'W',
+    'units': ['W'],
+    'value': '50'},
+  'Switch-off Temperature': {'type': 'number',
+    'unit': '°C',
+    'units': ['°C', 'K'],
+    'value': '100'}}},
+```
+
+Corresponding to the custom fields in our experiment:
+
+![screenshot of experiment with custom fields metadata](fig/sreenshot_experiment_custom_fields.png)
+
+There is a `metadata` and a `metadata_decoded`. We can quickly check what te differences are by using Python's built-in `type()` function.  Note, values are accessed slightly differently in dictionaries than in elabapi-python objects:
 
 ```python
 type(heating_experiments_full[0]['metadata'])
 ```
 
-Output:
+**Output:**
 
 ```
 str
@@ -1043,19 +1075,21 @@ str
 type(heating_experiments_full[0]['metadata_decoded'])
 ```
 
-Output:
+**Output:**
 
 ```
 dict
 ```
 
-Basically, `metadata_decoded` means the json-formatted string has already been decoded into a dictionary. This is what we need. Let's output that part so we know how to access the values needed:
+Basically, `metadata_decoded` means the json-formatted string has already been decoded into a dictionary, which is easy to use in Python. This is what we need.
+
+Let's output that part so we know how to access the values needed:
 
 ```python
 heating_experiments_full[0]['metadata_decoded']
 ```
 
-Output
+**Output:**
 
 ```
 {'extra_fields': {'Laser Power': {'type': 'number',
@@ -1068,9 +1102,19 @@ Output
    'value': '100'}}}
 ```
 
-We want the power value from the extra fields. Let's collect these in a list:
+That means we can access each value accordingly:
 
-Now that we have the values, we can go ahead and use them. We've prepared a script that contains a function that generates some synthetic data and saves it as a CSV (see `scripts/generate_measurement.py`). Let's import this and run it for each experiment, e.g., every set of values. The function returns the path to the generated file, which we will save in a list so we can easily access each one in later steps.
+```python
+heating_experiments_full[0]['metadata_decoded']['extra_fields']['Laser Power']['value']
+```
+
+**Output:**
+
+```
+'125'
+```
+
+We want to use hese in a pre-prepared script that contains a function that generates some synthetic data and saves it as a CSV (see `scripts/generate_measurement.py`). Let's import this and run it for each experiment, e.g., every set of values. The function returns the path to the generated file, which we will save in a list so we can easily access each one in later steps.
 
 ```python
 from scripts.generate_measurement import generate_measurement
@@ -1079,9 +1123,13 @@ measurement_files = []
 
 for exp in heating_experiments_full:
     off_temp = exp['metadata_decoded']['extra_fields']['Switch-off Temperature']['value']
+    
     laser_power = exp['metadata_decoded']['extra_fields']['Laser Power']['value']
+    
     print(f"Running measurement with laser poser {laser_power} and shut-off temperature {off_temp}...")
+    
     output_path = generate_measurement(power_w = float(laser_power), break_temp=float(off_temp))
+    
     print(f"Output file saved to {output_path}")
     measurement_files.append(output_path)
 
@@ -1106,13 +1154,17 @@ for exp in heating_experiments_full:
     
 ```
 
-If you check your experiments in the UI, you should see your attached files.
+If we check our experiments in the GUI, we should see your attached files:
+
+![screenshot of an atatched file in the experiment](fig/screenshot_experiment_file.png)
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-Write a for loops that sets each experiment status to running. Hint: get an idea of what the commands could look like in the example [examples/05-create-modify-item.py](https://github.com/elabftw/elabapi-python/blob/master/examples/05-create-modify-item.py) on GitHub.
+Write a for loops that sets each experiment status to running. 
 
-Execute the code and check the UI to see if it worked.
+Hint: get an idea of what the commands could look like in the example [examples/05-create-modify-item.py](https://github.com/elabftw/elabapi-python/blob/master/examples/05-create-modify-item.py) on GitHub.
+
+Execute the code and check the GUI to see if it worked.
 
 ::::::::::::::::::::::::::::::::::::: solution
 

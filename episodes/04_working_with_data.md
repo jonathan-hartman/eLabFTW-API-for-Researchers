@@ -1168,7 +1168,7 @@ Execute the code and check the GUI to see if it worked.
 
 ::::::::::::::::::::::::::::::::::::: solution
 
-The request we are making is a `patch` to an existing experiment. We need to tell the 
+The request we are making is a `patch` to an existing experiment. We need to tell the
 
 ```python
 for exp in heating_experiments_full:
@@ -1177,7 +1177,7 @@ for exp in heating_experiments_full:
 
 ```
 
-Note, and alternative using the original experiment return would be:
+Note, and alternative using the original experiment return (using the elabapi-python package) would be:
 
 ```python
 for exp in heating_experiments:
@@ -1187,23 +1187,18 @@ for exp in heating_experiments:
 
 Here, we are working with the eLabFTW object instead of a dictionary, so we access the experiment ID differently.
 
-An even shorter war to do this:
+We could shorten this a bit:
 
 ```python
 for exp in heating_experiments:
     experiments_api.patch_experiment(exp.id, body={'status': 47})
 ```
 
-And even shorter using list comprehension:
-
-```python
-[experiments_api.patch_experiment(exp.id, body={'status': 47}) for exp in heating_experiments]
-```
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
-Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the UI and then runs them for you and attached the output files for you to then check through the UI.
+Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the GUI and then runs them for you and attached the output files for you to then check through the GUI.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints

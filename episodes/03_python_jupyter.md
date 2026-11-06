@@ -50,7 +50,7 @@ Core concepts
 
 ### 1. Printing & basic data types  
 
-::::::::::::::::::::::::::::::: instructor note
+:::::::::::::::::::::::::::::::::::::: instructor note
 
 These will be live coded in a Jupyter notebook.
 
@@ -218,9 +218,6 @@ len(sample)
 ```
 
 See the [Python Docs on built-in functions](https://docs.python.org/3/builtins/functions.html).
-
-
-
 
 ::::::::::::::::::::::::::::::::::::::::::: challenge
 What will be printed?

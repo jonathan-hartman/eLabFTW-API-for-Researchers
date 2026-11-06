@@ -328,9 +328,8 @@ for experiment in heating_experiments:
   print(experiment.id)
 ```
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+:::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 What we need to run our experiments is the laser power entry. There's a slight bug in the Python package as you may notice: the parameters, which would be in `metadata` are missing:
 
 ```python
@@ -1199,13 +1198,16 @@ for exp in heating_experiments:
 :::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
+
 Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the GUI and then runs them for you and attached the output files for you to then check through the GUI.
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
 - Retrieve information using either the elabapi_python module or requests
-- Use queries and filters in your Python API requests 
+- Use queries and filters in your Python API requests
 - Access specific entries by given parameters in retrieved experiments
 - Iterate (loop) over lists of entries to perform bulk actions
+  
 :::::::::::::::::::::::::::::::::::::::::::::::

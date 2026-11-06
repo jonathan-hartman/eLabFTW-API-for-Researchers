@@ -327,7 +327,7 @@ exp = exp_client.get_experiment(exp_id)
 print(exp)
 ```
 
-You can see, this does the same things as we were doing before, but many of us find Python easier to read and understand than the bash commands. This is especially true when we start to combine multiple steps into a single script.
+You can see, this does the same things as we were doing before, but many of us find Python easier to read and understand than the terminal commands. This is especially true when we start to combine multiple steps into a single script.
 
 We can derive the code from the documentation, as well, which is a great way to learn how to use the API. Check out the [API docs](https://doc.elabftw.net/api/) and click on `Python Library (v2)`.
 

@@ -299,11 +299,13 @@ Honestly, for this specific case, the help output is not extremely helpful. Howe
 dir(elabapi_python)
 ```
 
-To get started, we have the [examples folder](https://github.com/elabftw/elabapi-python/tree/master/examples) on Github. Deltablot has created a nifty [client configuration file](https://github.com/elabftw/elabapi-python/blob/master/examples/client.py). This has already been downloaded and included in your `workshop_data` directory. We have made some small adjustments to ensure the secrets load correctly.
+If we start the [API docs](https://doc.elabftw.net/api/) again and click on `Python Library (v2)`, we get are taking to a GitHub repository.
+
+Here, we have the [examples folder](https://github.com/elabftw/elabapi-python/tree/master/examples) on Github. This contains a nifty [client configuration file](https://github.com/elabftw/elabapi-python/blob/master/examples/client.py). This has already been downloaded and included in your `workshop_data` directory. We have made some small adjustments to ensure the secrets load correctly.
 
 In the Python library, there are various clients that can be used to interact with the eLabFTW API. First, you set up the main one, which has already been done in `client.py`, then, you can create the others.
 
-Import the main one into your notebook using:
+We import the main api client into our notebook using:
 
 ```python
 from scripts.client import api_client
@@ -316,7 +318,6 @@ You may get an error here for missing packages, especially dotenv:
 ```python
 %pip install python-dotenv
 ```
-
 
 Let's look at a couple examples in the GitHub repo.
 
@@ -339,6 +340,8 @@ api_response
 4
 ```
 
+will output the number 4.
+
 As opposed to:
 
 ```python
@@ -346,6 +349,7 @@ print(api_response)
 4
 ```
 
+which will output both `api_response` and the number 4.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Back to the clients. Similarly, we can see an experiment client:
@@ -354,17 +358,17 @@ Back to the clients. Similarly, we can see an experiment client:
 exp_client = elabapi_python.ExperimentsApi(api_client)
 ```
 
-Check out line 88, which shows us a `GET` request. Remember how we created and retrieved an experiment in the terminal? Let's try the same thing here using the experiment ID from the last lesson.
+Check out [line 87](https://github.com/elabftw/elabapi-python/blob/master/examples/00-getting-started.py#L87), which shows us how we retrieve an experiment. Remember how we created and retrieved an experiment in the terminal using cURL? Let's try the same thing here using the experiment ID from the last lesson.
 
 ```python
-exp_id = 94 # example: replace with your experiment ID
+exp_id = 94 # example; replace with your experiment ID
 exp = exp_client.get_experiment(exp_id)
 print(exp)
 ```
 
 You can see, this does the same things as we were doing before, but many of us find Python easier to read and understand than the terminal commands. This is especially true when we start to combine multiple steps into a single script.
 
-We can derive the code from the documentation, as well, which is a great way to learn how to use the API. Check out the [API docs](https://doc.elabftw.net/api/) and click on `Python Library (v2)`.
+
 
 ::::::::::::::::::::::::::::::::::::: challenge
 

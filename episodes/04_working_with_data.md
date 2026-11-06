@@ -1,7 +1,7 @@
 ---
 title: "Working with Data from eLabFTW"
-teaching: 45 # teaching time in minutes
-exercises: 45 # exercise time in minutes
+teaching: 
+exercises: 
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions
@@ -23,7 +23,7 @@ exercises: 45 # exercise time in minutes
 
 ## Getting Experiment Parameters from eLabFTW
 
-In the previous episodes, we created an experiment and attached `calibration.csv`. Now, we will look at how to get and work with information from entries in eLabFTW.
+In the previous episodes, we created an experiment, linked a resource, and retrieved the experiments and resources. Now, we will look at how to get and work with information from entries in eLabFTW.
 
 To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each.
 

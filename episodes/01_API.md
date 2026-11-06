@@ -87,7 +87,7 @@ Scrolling through the categories and knowing how eLabFTW is structured, we can g
 
 The first time you see these types of docs pages, it may seem a bit daunting. So let's construct our first API call using a tool we're all familiar with: our browser.
 
-1. Write the eLabFTW URL, e.g., `https://elab.parks.web.gateway.ionos.coscine.dev` or `https://research.eln.rwth-aachen.de` in the menu bar.
+1. Write the eLabFTW URL, e.g., `https://elab.parks.web.gateway.ionos.coscine.dev` (match to your instance) in the menu bar.
 2. Add `/api/v2`.
 3. Add `/users/me`, behind this (hint: for more complicated endpoints, copy and paste from docs by hovering over the endpoint and using the clipboard icon).
 4. You show now have something that looks `http://elab.parks.web.gateway.ionos.coscine.dev/api/v2/users/me`.

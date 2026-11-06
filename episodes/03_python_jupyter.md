@@ -293,6 +293,8 @@ api_response = info_client.get_info()
 api_response
 ```
 
+:::::::::::::::::::::::::::::::::::::::::::::::::::: callout
+
 In Jupyter Notebooks, we often get a pretty printed output without using a `print()` statement. This only works for the last line of a cell, so if you want to see the output of multiple lines or when using in a script, you will need to use `print()`.
 
 For example:
@@ -308,6 +310,8 @@ As opposed to:
 print(api_response)
 4
 ```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Back to the clients. Similarly, we can see an experiment client:
 

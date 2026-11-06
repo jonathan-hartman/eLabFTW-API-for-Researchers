@@ -1,7 +1,7 @@
 ---
 title: "Working with Data from eLabFTW"
-teaching: 
-exercises: 
+teaching: 40
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions
@@ -25,6 +25,36 @@ exercises:
 
 In the previous episodes, we created an experiment, linked a resource, and retrieved the experiments and resources. Now, we will look at how to get and work with information from entries in eLabFTW.
 
+Here's an overview of the intended workflow:
+
+```mermaid
+---
+config:
+  theme: redux
+  layout: fixed
+---
+flowchart LR
+ subgraph s4["ELN (GUI)"]
+        n3["Experiment"]
+        n11["parameters (custom field metadata)"]
+  end
+ subgraph s3["Script"]
+        n10["get parameters from ELN"]
+        n6["output data files"]
+        n5["run measurements"]
+  end
+ subgraph s2["Device Computer"]
+        s3
+  end
+    n5 --> n6
+    n6 -- attach --> n3
+    n3 --> n11
+    n10 --> n5
+    n11 --> n10
+    n12(["Researcher"]) -- plens --> n3
+
+```
+
 To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each.
 
 The configured client, which we worked with in the previous episode, loads the API host and token from the `.env` file beside `client.py`. Don't forget to keep the token in the environment and do not place it in notebook cells or output - this is not as important if you are working on your personal computer, but is good to practice.
@@ -38,7 +68,7 @@ from scripts.client import api_client
 
 The first thing we will do is run an experiment, creating data files to attach to the associated experiments in eLabFTW.
 
-To this end, experiments have already been created in eLabFTW through the UI - say, the planning took place there and the experimental parameters have been setup. We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
+We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
 
 What we want to do:
 
@@ -47,7 +77,7 @@ What we want to do:
 3. Attach these experiments back to the experiments.
 4. Change the status to running.
 
-First, let's get the experiments. To do so, we need the experiments api again. We can kind of guess from our previous coding experience that we will need an upload API. We can what that looks like by checking out the [examples/03-experiment-file-handling.py](https://github.com/elabftw/elabapi-python/blob/master/examples/03-experiment-file-handling.py) in the github repository.
+First, let's get the experiments. To do so, we need the experiments api again. We also need a method to attach files. We can what that looks like by checking out the [examples/03-experiment-file-handling.py](https://github.com/elabftw/elabapi-python/blob/master/examples/03-experiment-file-handling.py) in the github repository.
 
 ```python
 experiments_api = elabapi_python.ExperimentsApi(api_client)
@@ -56,9 +86,9 @@ uploads_api = elabapi_python.UploadsApi(api_client)
 
 Note: run `%pip install elabapi_python` (or for any other packages) if needed.
 
-We could get all experiments and then, as we just saw, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
+We could get all experiments, as we just saw, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
 
-A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiences. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
+A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look for experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in the title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiments. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
 
 ```python
 heating_experiments=experiments_api.read_experiments(q='Heating Test Run', status=80, scope=1)

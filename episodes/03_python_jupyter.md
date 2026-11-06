@@ -50,7 +50,7 @@ Core concepts
 
 ### 1. Printing & basic data types  
 
-:::::::::::::::::::::::::::::::::::::: instructor note
+:::::::::::::::::::::::::::::::::::::: instructor
 
 These will be live coded in a Jupyter notebook.
 

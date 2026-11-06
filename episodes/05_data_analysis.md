@@ -143,6 +143,8 @@ Use the above snippets and function to write a code that
 
 Hint: make a small modification to the `download_matching_uploads_locally` so you can retrieve the file name.
 
+Bonus: if anyone can figure out how to add an image directly to the main text field, please share!
+
 ::::::::::::::::::::::::::::::::::::: solution
 TODO
 :::::::::::::::::::::::::::::::::::::

@@ -207,7 +207,7 @@ Note: `.env` is more common, however, Jupyter lab immediately hides these.
 
 Now, let's link the device resource **Bluetooth Infrared Thermometer**.  Again, we look at the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/). We need three parameters:
 
-* entity type &rarr; resource  &rarr; `items` (as tzhey are called in the API)
+* entity type &rarr; resource  &rarr; `items` (as they are called in the API)
 * entity (resource) id
 * experiment id &rarr; see above previously json
 

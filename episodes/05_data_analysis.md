@@ -1,5 +1,5 @@
 ---
-title: "Working with Data from eLabFTW"
+title: "Data Analysis Workflows"
 teaching: 45 # teaching time in minutes
 exercises: 45 # exercise time in minutes
 ---

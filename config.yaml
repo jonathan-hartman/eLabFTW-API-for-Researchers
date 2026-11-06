@@ -70,8 +70,8 @@ episodes:
 - 01_API.md
 - 02_API_cli.md
 - 03_python_jupyter.md
-- 04_data_analysis.md
-
+- 04_working_with_data.md
+- 05_data_analysis.md
 
 # Information for Learners
 learners: 

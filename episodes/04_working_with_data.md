@@ -1095,7 +1095,7 @@ for exp in heating_experiments_full:
 
 ```
 
-Note, and alternative using the original experiment return would be:
+Note, and alternative using the original experiment return (using the elabapi-python package) would be:
 
 ```python
 for exp in heating_experiments:
@@ -1105,17 +1105,11 @@ for exp in heating_experiments:
 
 Here, we are working with the eLabFTW object instead of a dictionary, so we access the experiment ID differently.
 
-An even shorter war to do this:
+We could shorten this a bit:
 
 ```python
 for exp in heating_experiments:
     experiments_api.patch_experiment(exp.id, body={'status': 47})
-```
-
-And even shorter using list comprehension:
-
-```python
-[experiments_api.patch_experiment(exp.id, body={'status': 47}) for exp in heating_experiments]
 ```
 
 ::::::::::::::::::::::::::::::::::::

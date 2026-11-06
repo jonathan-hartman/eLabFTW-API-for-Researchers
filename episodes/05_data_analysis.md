@@ -15,18 +15,44 @@ exercises: 45 # exercise time in minutes
 
 Let's imagine we had used an automated workflow in episode 05 to create the files. Everything ran in our absence and we have the individual output files attached to the experiments.
 
-We can now keep going and add some more information to our experiments, such as a plot to quickly see the data.
+We can now keep going and add some more information to our experiments, such as a plot to quickly see the data, for example:
+
+```mermaid
+
+---
+config:
+  theme: redux
+  layout: dagre
+---
+flowchart LR
+ subgraph s4["ELN (GUI)"]
+        n3["Experiment"]
+        n11["measurement file"]
+  end
+ subgraph s3["Jupyter Notebook"]
+        n10["get measurement files from experiment"]
+        n5["create plots"]
+  end
+ subgraph s2["Your Computer"]
+        s3
+  end
+
+    n5 -- attach --> n3
+    n3 --> n11
+    n10 --> n5
+    n11 --> n10
+
+```
 
 We have not worked with Pandas or Matplotlib yet, but they are the most common Python libraries for data analysis and visualization. We will use them to load the CSV file and create a plot.
 
-Also note, we use aliases for the libraries to make the code more concise. This is a common practice in Python, especially for frequently used libraries. `pd` is the standard alias for `pandas`, and `plt` is the alias for `matplotlib.pyplot`.
+Also note, we use aliases for certain libraries to make the code more concise. This is a common practice in Python, especially for frequently used libraries. `pd` is the standard alias for `pandas`.
 
 Since we're in a new notebook, we set everything up by creating the API clients we need:
 
 ```python
 experiments_api = elabapi_python.ExperimentsApi(api_client)
 uploads_api = elabapi_python.UploadsApi(api_client)
-links_api = elabapi_python.LinksToExperimentsApi(api_client) #TODO CHECK IF WE NEED/MOVE
 ```
 
 Let's access the one of our experiments and download the data file.
@@ -111,7 +137,7 @@ uploads_api.post_upload('experiments', experiment.id, file="50w_temp_time_plot.p
 Use the above snippets and function to write a code that
 
 1. Retrieves all desired experiments
-2. Plots and saves figures for each
+2. Plot and saves figures for each
 3. Attaches the plot back to the experiment
 4. Sets the experiment status to success
 

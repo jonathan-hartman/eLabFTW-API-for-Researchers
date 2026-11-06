@@ -79,7 +79,7 @@ This gives us very basic information on the API. If we scroll down we find anoth
 
 Three things are important for this course: (1) the version 2 documentation link, which leads to the APIs [Swagger documentation page](https://doc.elabftw.net/api/v2), (2) the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/) and (3) the [Python Library (v2) link](https://github.com/elabftw/elabapi-python), the latter two of which we will get to later.
 
-We will mainly focus on the  to the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/). To the left, we have the various API methods allowed for each type of API, e.g. items (resources in the UI), experiments, items, and so on.
+We will mainly focus on the  to the [HTML doc (v2)](https://doc.elabftw.net/api/elabapi-html/). To the left, we have the various API methods allowed for each type of API, e.g. items (resources in the graphical user interface (GUI)), experiments, items, and so on.
 
 Scrolling through the categories and knowing how eLabFTW is structured, we can get a pretty good idea of the types of interaction we can carry out. For instance, under [API METHODS - EXPERIMENTS](https://doc.elabftw.net/api/elabapi-html/#api-Experiments) we see there are options to delete, get, post, patch, and read.
 

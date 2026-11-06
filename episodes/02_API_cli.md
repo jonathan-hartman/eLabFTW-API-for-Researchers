@@ -64,7 +64,7 @@ Unlike our browser, through which we have been identified by logging in, we now 
 4. Select the `API KEYS` header
 5. Under `Create new key`, enter a name for your key and select `Read/Write` from the permissions drop-down menu.
 6. click `Generate an API Key`
-7. Copy and paste this to the `secrets.env` file in your `research_computer/` folder for later use. It will only be shown once in the ELN's UI!
+7. Copy and paste this to the `secrets.env` file in your `research_computer/` folder for later use. It will only be shown once in the ELN's GUI!
 
 Now we can start editing the request:
 
@@ -89,7 +89,7 @@ You can type this info directly into your terminal. For larger requests, however
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-You can load the API key from a `secrets.env` file instead of pasting the secret into the command. 
+You can load the API key from a `secrets.env` file instead of pasting the secret into the command.
 
 Create such a file **in the workshop directory** and paste your token:
 
@@ -262,13 +262,11 @@ curl -X GET \
 
 This prints the JSON response directly in the terminal. The response should contain the experiment title and body, its creation and modification details, the permission settings, and the values in `metadata.extra_fields`.
 
-
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
-
 
 **If you have admin rights**, for more readable, indented JSON, you can pipe the response through `jq` :
 
@@ -298,6 +296,7 @@ explicitly, because `curl` may be an alias for a PowerShell command (shortened e
 ```powershell
 curl.exe ... | jq .
 ```
+
 :::::::::::::::::::::::::::::::::::::::::::::::
 
 <!-- 

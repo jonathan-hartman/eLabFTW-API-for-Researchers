@@ -57,7 +57,7 @@ uploads_api = elabapi_python.UploadsApi(api_client)
 
 Let's access the one of our experiments and download the data file.
 
-We keep using the `uploads_api` to interact with attached files. To ensure we have our experiment information, let's retrieve these again. We will filter by status again, but remember, we changed this to _Running_. The UI reminds us that this status has ID 47.
+We keep using the `uploads_api` to interact with attached files. To ensure we have our experiment information, let's retrieve these again. We will filter by status again, but remember, we changed this to _Running_. The GUI reminds us that this status has ID 47.
 
 ```python
 heating_experiments = experiments_api.read_experiments(q='Heating Test Run', status = 47, scope=1)
@@ -150,8 +150,6 @@ TODO
 :::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 

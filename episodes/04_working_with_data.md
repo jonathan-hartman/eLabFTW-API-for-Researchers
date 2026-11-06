@@ -38,7 +38,7 @@ from scripts.client import api_client
 
 The first thing we will do is run an experiment, creating data files to attach to the associated experiments in eLabFTW.
 
-To this end, experiments have already been created in eLabFTW through the UI - say, the planning took place there and the experimental parameters have been setup. We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW UI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
+To this end, experiments have already been created in eLabFTW through the GUI - say, the planning took place there and the experimental parameters have been setup. We are going to use a super simples example where we grab a single experiment parameter from a set of experiments and run each measurement accordingly. If you check the eLabFTW GUI, you will see three experiments with the category 'MEASUREMENT' titled 'Heating Test Run X', where X is a roman numeral. These each have an extra field called 'Laser Power', for where each experiment has a different value and set the status to planning.
 
 What we want to do:
 
@@ -58,7 +58,7 @@ Note: run `%pip install elabapi_python` (or for any other packages) if needed.
 
 We could get all experiments and then, as we just saw, which would work fine for our little team, but is not really efficient in reality. Luckily, the API allows us to query and this filter what it returns.
 
-A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiences. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
+A quick check of the [swagger docs under **read experiments**](https://doc.elabftw.net/api/v2/#/Experiments/read-experiments) gives us information here. You can query terms, look experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat Test Run' in title. We can get the status ID through the browser GUI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiences. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This is just to ensure you're working with what you just created yourself.
 
 ```python
 heating_experiments=experiments_api.read_experiments(q='Heating Test Run', status=80, scope=1)
@@ -268,7 +268,7 @@ Experiment owned by: Nicole Parks
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-How would you access the ID for each of the experiments you retrieved? 
+How would you access the ID for each of the experiments you retrieved?
 
 Bonus: How can you avoid having to access the experiment by its individual index each time you want to retrieve the ID?
 
@@ -1078,17 +1078,17 @@ for exp in heating_experiments_full:
     
 ```
 
-If you check your experiments in the UI, you should see your attached files.
+If you check your experiments in the GUI, you should see your attached files.
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
 Write a for loops that sets each experiment status to running. Hint: get an idea of what the commands could look like in the example [examples/05-create-modify-item.py](https://github.com/elabftw/elabapi-python/blob/master/examples/05-create-modify-item.py) on GitHub.
 
-Execute the code and check the UI to see if it worked.
+Execute the code and check the GUI to see if it worked.
 
 ::::::::::::::::::::::::::::::::::::: solution
 
-The request we are making is a `patch` to an existing experiment. We need to tell the 
+The request we are making is a `patch` to an existing experiment. We need to tell the
 
 ```python
 for exp in heating_experiments_full:
@@ -1118,7 +1118,7 @@ for exp in heating_experiments:
 :::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: callout
-Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the UI and then runs them for you and attached the output files for you to then check through the UI.
+Showing this in a Jupyter Notebook helps you better understand the single steps. However, as you may have noticed, this is really innefficient, e.g. it loops over the experiments list and gets the power variable twice. This would all be consolidated into a script. Here, we would create single functions for each step and so on. Then this could be run automatically, e.g., on a device computer, maybe one schedule that checks for new experimets entered throug the GUI and then runs them for you and attached the output files for you to then check through the GUI.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints

@@ -1,7 +1,7 @@
 ---
 title: "Data Analysis Workflows"
-teaching: 45 # teaching time in minutes
-exercises: 45 # exercise time in minutes
+teaching: 20 # teaching time in minutes
+exercises: 30 # exercise time in minutes
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions

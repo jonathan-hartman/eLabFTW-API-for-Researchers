@@ -147,19 +147,25 @@ value is larger
 
 ### 6. Defining and calling a function  
 
+Functions serve as reusable pieces of code. We define them using `def`:
+
 ```python
 def greet(name: str) -> str:
     """Return a friendly greeting."""
     return f"Hello, {name}!"
+```
 
+Then we can call them using their name and passing any required parameters in parentheses:
+
+```
 print(greet("Alice"))
 ```
 
-**Output**  
+**Output**
 
 ```
 Hello, Alice!
-```  
+```
 
 #### Built-in Functions
 

@@ -87,7 +87,7 @@ Scrolling through the categories and knowing how eLabFTW is structured, we can g
 
 Selecting a methods gives us more information, e.g., we can see that `postExperiments` creates an experiment, as well as usage examples in different programming languages and the parameters we can give our API request.
 
-![alt text](fig/screenshot_postExperiments_HTMLdocs.png)
+![screenshot of the postExperiment API method](fig/screenshot_postExperiments_HTMLdocs.png)
 
 ## Constructing Requests
 

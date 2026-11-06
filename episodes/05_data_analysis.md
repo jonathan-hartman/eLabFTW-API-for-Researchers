@@ -137,7 +137,7 @@ uploads_api.post_upload('experiments', experiment.id, file="50w_temp_time_plot.p
 Use the above snippets and function to write a code that
 
 1. Retrieves all desired experiments
-2. Plot and saves figures for each
+2. Plots and saves figures for each
 3. Attaches the plot back to the experiment
 4. Sets the experiment status to success
 

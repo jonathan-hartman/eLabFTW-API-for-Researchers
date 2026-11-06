@@ -1209,6 +1209,7 @@ Showing this in a Jupyter Notebook helps you better understand the single steps.
 ::::::::::::::::::::::::::::::::::::: keypoints
 
 - Retrieve information using either the elabapi_python module or requests
-- Use queries and filters in your Python API requests to  access specific entries by given parameters
+- Use queries and filters in your Python API requests 
+- Access specific entries by given parameters in retrieved experiments
 - Iterate (loop) over lists of entries to perform bulk actions
 :::::::::::::::::::::::::::::::::::::::::::::::

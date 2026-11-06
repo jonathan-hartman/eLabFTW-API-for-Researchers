@@ -57,7 +57,7 @@ flowchart LR
 
 To this end, head to our eLabFTW test instance via your in your browser. Create at least three experiments using the Heating Test template. Enter a different Laser Power value for each.
 
-The configured client, which we worked with in the previous episode, loads the API host and token from the `.env` file beside `client.py`. Don't forget to keep the token in the environment and do not place it in notebook cells or output - this is not as important if you are working on your personal computer, but is good to practice.
+The configured client, which we worked with in the previous episode, loads the API host and token from the `secrets.env` or `.env` file beside `client.py`. Don't forget to keep the token in the environment and do not place it in notebook cells or output - this is not as important if you are working on your personal computer, but is good to practice.
 
 Again, since we are using a new notebook we import everything we need:
 

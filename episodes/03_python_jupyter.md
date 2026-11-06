@@ -220,29 +220,7 @@ len(sample)
 See the [Python Docs on built-in functions](https://docs.python.org/3/builtins/functions.html).
 
 
-<!-- ### 7. Reading and writing JSON files  
 
-```python
-import json
-
-payload = {"experiment": "test", "value": 123}
-
-# Write to disk
-with open("payload.json", "w") as fp:
-    json.dump(payload, fp, indent=2)
-
-# Read it back
-with open("payload.json") as fp:
-    data = json.load(fp)
-
-print(data)
-```
-
-**Output**  
-
-```
-{'experiment': 'test', 'value': 123}
-```
 
 ::::::::::::::::::::::::::::::::::::::::::: challenge
 What will be printed?

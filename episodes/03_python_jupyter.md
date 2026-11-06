@@ -161,7 +161,60 @@ print(greet("Alice"))
 Hello, Alice!
 ```  
 
-### 7. Reading and writing JSON files  
+#### Built-in Functions
+
+There are a number of built-in functions in Python, which means we don't have to define everything ourselves. We've already seen some of these, for example, the `print()` function. Again, we call the function by it's name and pass what it needs in the parentheses (as above `print("Hello, eLabFTW researcher!")`).
+
+The built-in function `help()` allows us to retrieve the documentation on functions, including built-in ones. For example, we can call `help()` on the built-in function `type()`:
+
+```python
+help(print)
+```
+
+**Output**
+
+```
+Help on built-in function print in module builtins:
+
+print(*args, sep=' ', end='\n', file=None, flush=False)
+    Prints the values to a stream, or to sys.stdout by default.
+    
+    sep
+      string inserted between values, default a space.
+    end
+      string appended after the last value, default a newline.
+    file
+      a file-like object (stream); defaults to the current sys.stdout.
+    flush
+      whether to forcibly flush the stream.
+``` 
+
+Another useful built-in function is `len()` which gives is the length of things, such as, strings, lists, or dictionaries:
+
+```python
+len('Hello')
+```
+
+**Output**
+```
+5
+```
+
+```python
+samples = ["S1", "S2", "S3"]   # create a list
+len(sample)
+```
+
+**Output**
+
+```
+3
+```
+
+See the [Python Docs on built-in functions](https://docs.python.org/3/builtins/functions.html).
+
+
+<!-- ### 7. Reading and writing JSON files  
 
 ```python
 import json

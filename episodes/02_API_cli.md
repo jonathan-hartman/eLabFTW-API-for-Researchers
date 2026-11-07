@@ -94,7 +94,7 @@ You can load the API key from a `secrets.env` file instead of pasting the secret
 Create such a file **in the workshop directory** and paste your token:
 
 ```bash
-ELAB_API_KEY='YOU_TOKEN_HERE'
+ELAB_API_KEY='YOUR_TOKEN_HERE'
 ELAB_API_HOST='https://elab.parks.web.gateway.ionos.coscine.dev/api/v2'
 ```
 
@@ -226,7 +226,17 @@ The below code intends to link the device resource [**Bluetooth Infrared Thermom
 
 In it current state, it fails. What needs to be fixed?
 
-Hint: [Read the docs for LinksToExperiments](https://doc.elabftw.net/api/elabapi-html/#api-LinksToExperiments)
+::: hint
+
+You can use a GET request to the "$ELAB_API_HOST/experiments" endpoint to list all experiments and find the ID of the one you just created.
+
+:::
+
+::: hint
+
+[Read the docs for LinksToExperiments](https://doc.elabftw.net/api/elabapi-html/#api-LinksToExperiments)
+
+:::
 
 ```bash
 curl -X POST \
@@ -246,7 +256,11 @@ curl -X POST \
 
 What would the command line `cURL` API call look like that retrieves the experiment we just created? Write and execute this command. Then, analyze the response and see if everything is as you imagined.
 
-Hint: Look for the `location` in the response from your last call to get the ID.
+::: hint
+
+Look for the `location` in the response from your last call to get the ID.
+
+:::
 
 :::::::::::::::::::::::: solution
 

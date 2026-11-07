@@ -222,7 +222,7 @@ curl -i -X POST \
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-The below code intends to link the device resource [**Bluetooth Infrared Thermometer**](elab.parks.web.gateway.ionos.coscine.dev/database.php?mode=view&id=144) to the experiment experiment created above.
+The below code intends to link the device resource [**Bluetooth Infrared Thermometer**](https://elab.parks.web.gateway.ionos.coscine.dev/database.php?mode=view&id=144) to the experiment experiment created above.
 
 In it current state, it fails. What needs to be fixed?
 

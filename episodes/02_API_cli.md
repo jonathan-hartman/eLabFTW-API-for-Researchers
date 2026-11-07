@@ -149,6 +149,7 @@ _Feel free to modify!_
    "canwrite_base": 20,
    "canread": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
    "canwrite": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
+   "category": 27,
    "metadata": {
       "extra_fields": {
          "sample_id": {
@@ -180,7 +181,7 @@ Final code:
 
 ```bash
 curl -i -X POST \
-    -H "Authorization: YOUR_TOKEN" \
+    -H "Authorization: $ELAB_API_KEY" \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -d '{
@@ -191,7 +192,6 @@ curl -i -X POST \
    "canread": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
    "canwrite": "{\"teams\": [], \"users\": [], \"teamgroups\": []}",
    "category": 27,
-   "
    "metadata": {
       "extra_fields": {
          "sample_id": {
@@ -217,7 +217,7 @@ curl -i -X POST \
       }
    }
 }' \
-   "https://{YOUR_ELAB_URL}/api/v2/experiments"
+   "$ELAB_API_HOST/experiments"
 ```
 
 ::::::::::::::::::::::::::::::::::::: challenge
@@ -233,7 +233,7 @@ curl -X POST \
    -H "Authorization: $ELAB_API_KEY" \
    -H "Accept: application/json" \
    -H "Content-Type: application/json" \
-   "elab.parks.web.gateway.ionos.coscine.dev/items/144/experiment/{your_exp_id}"
+   "$ELAB_API_HOST/items/144/experiment/{your_exp_id}"
 ```
 
 :::::::::::::::::::::::: solution

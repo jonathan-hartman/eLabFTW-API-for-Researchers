@@ -93,7 +93,7 @@ You can load the API key from a `secrets.env` file instead of pasting the secret
 
 Create such a file **in the workshop directory** and paste your token:
 
-```python
+```bash
 ELAB_API_KEY='YOU_TOKEN_HERE'
 ELAB_API_HOST='https://elab.parks.web.gateway.ionos.coscine.dev/api/v2'
 ```

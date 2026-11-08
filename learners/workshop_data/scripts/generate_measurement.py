@@ -47,7 +47,8 @@ def generate_measurement(
         step_s=step_s,
         seed=seed,
     )
-    file_name = f"{int(power_w)}_measurement_{datetime.now().isoformat()}.csv"
+    timestamp = datetime.now().strftime("%Y-%m-%dT%H-%M-%S-%f")
+    file_name = f"{int(power_w)}_measurement_{timestamp}.csv"
     output_path = Path(output_folder) / Path(file_name)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="") as f:

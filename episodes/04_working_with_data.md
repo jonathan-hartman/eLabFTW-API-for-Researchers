@@ -86,7 +86,7 @@ We could get all experiments, as we just saw in the previous episode, which woul
 A quick check of the [HTML eLabFTW API Docs for **readExperiments**](https://doc.elabftw.net/api/elabapi-html/#api-Experiments-readExperiments) gives us information here. You can query terms, look for experiments linked to specific other entries, and so on. We have a few options here, but let's keep ot simple and look for experiments with status 'Planning' and 'Heat' in the title. We can get the status ID through the browser UI by filtering by the status and checking the address bar. We are also going to set the scope to only find our own experiments. From the docs we can see: _1: self, 2: team, 3: everything. It defaults to the user value stored in preferences._ This ensures everyone is working with their own experiments.
 
 ```python
-heating_experiments=experiments_api.read_experiments(q='Heating', status=80, scope=1)
+heating_experiments=experiments_api.read_experiments(q='Heating', status=80, scope=2)
 ```
 
 The return is a `list` of experiment objects. We can check how many it returned for a quick sanity check:

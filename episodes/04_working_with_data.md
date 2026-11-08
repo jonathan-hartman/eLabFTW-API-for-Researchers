@@ -1123,13 +1123,13 @@ measurement_files = []
 
 for exp in heating_experiments_full:
     off_temp = exp['metadata_decoded']['extra_fields']['Switch-off Temperature']['value']
-    
+
     laser_power = exp['metadata_decoded']['extra_fields']['Laser Power']['value']
-    
+
     print(f"Running measurement with laser poser {laser_power} and shut-off temperature {off_temp}...")
-    
+
     output_path = generate_measurement(power_w = float(laser_power), break_temp=float(off_temp))
-    
+
     print(f"Output file saved to {output_path}")
     measurement_files.append(output_path)
 
@@ -1149,9 +1149,9 @@ for exp in heating_experiments_full:
                 "experiments",
                 exp_id,
                 file=str(file),
-            
+
     )
-    
+
 ```
 
 If we check our experiments in the GUI, we should see your attached files:
@@ -1160,7 +1160,7 @@ If we check our experiments in the GUI, we should see your attached files:
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-Write a for loops that sets each experiment status to running. 
+Write a for loops that sets each experiment status to running.
 
 Hint: get an idea of what the commands could look like in the example [examples/05-create-modify-item.py](https://github.com/elabftw/elabapi-python/blob/master/examples/05-create-modify-item.py) on GitHub.
 
@@ -1209,5 +1209,5 @@ Showing this in a Jupyter Notebook helps you better understand the single steps.
 - Use queries and filters in your Python API requests
 - Access specific entries by given parameters in retrieved experiments
 - Iterate (loop) over lists of entries to perform bulk actions
-  
+
 :::::::::::::::::::::::::::::::::::::::::::::::

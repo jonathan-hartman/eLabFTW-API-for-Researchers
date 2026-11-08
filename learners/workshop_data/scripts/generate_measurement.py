@@ -22,9 +22,7 @@ def generate(
     rows = []
     for i in range(n):
         t = i * step_s
-        temp = (
-            start_temp + HEATING_COEFF * power_w * t + rng.gauss(0, NOISE_SD)
-        )
+        temp = start_temp + HEATING_COEFF * power_w * t + rng.gauss(0, NOISE_SD)
         rows.append((round(t, 2), round(temp, 3)))
         if temp == break_temp:
             break
@@ -38,8 +36,8 @@ def generate_measurement(
     duration_s=120.0,
     step_s=0.5,
     seed=None,
-    output_folder='output_data'
-):  
+    output_folder="output_data",
+):
 
     rows = generate(
         power_w=power_w,
@@ -49,8 +47,8 @@ def generate_measurement(
         step_s=step_s,
         seed=seed,
     )
-    file_name = f'{int(power_w)}_measurement_{datetime.now().isoformat()}.csv'
-    output_path = Path(output_folder)/Path(file_name)
+    file_name = f"{int(power_w)}_measurement_{datetime.now().isoformat()}.csv"
+    output_path = Path(output_folder) / Path(file_name)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="") as f:
         writer = csv.writer(f)
